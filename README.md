@@ -1,5 +1,9 @@
-# react-redux-registration-login-example
+# Install 
+`git pull`
 
-React + Redux - User Registration and Login Tutorial & Example
+`npm install`
 
-For documentation and further details go to http://jasonwatmore.com/post/2017/09/16/react-redux-user-registration-and-login-tutorial-example
+# Running
+`npm start`
+
+The back-end must be running on the port 5000
