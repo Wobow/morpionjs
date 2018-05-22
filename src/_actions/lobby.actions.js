@@ -9,6 +9,7 @@ export const lobbyActions = {
   getLobby,
   getLobbyUsers,
   getLobbyGames,
+  joinLobby,
   delete: _delete
 };
 
@@ -106,6 +107,26 @@ function getLobbyUsers(id) {
   }
   function failure(error) {
     return { type: lobbyConstants.GET_FAILURE, error };
+  }
+}
+
+function joinLobby(id) {
+  return dispatch => {
+    dispatch(request());
+
+    lobbyService
+      .joinLobby(id)
+      .then(res => dispatch(success(res)), error => dispatch(failure(error)));
+  };
+
+  function request() {
+    return { type: lobbyConstants.LOBBY_JOIN_REQUEST };
+  }
+  function success(lobbys) {
+    return { type: lobbyConstants.LOBBY_JOIN_SUCCESS, lobbys };
+  }
+  function failure(error) {
+    return { type: lobbyConstants.LOBBY_JOIN_FAILURE, error };
   }
 }
 

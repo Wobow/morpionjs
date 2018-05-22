@@ -6,8 +6,40 @@ export const lobbyService = {
   getLobby,
   getLobbyUsers,
   getLobbyGames,
+  joinLobby,
+  leaveLobby,
   delete: _delete
 };
+
+function joinLobby(id) {
+  const requestOptions = {
+    method: "POST",
+    headers: authHeader(),
+    body: JSON.stringify({
+      type: "joinLobby",
+      accessResource: id
+    })
+  };
+
+  return fetch("http://localhost:5000/api/requests", requestOptions).then(
+    handleResponse
+  );
+}
+
+function leaveLobby(userId) {
+  const requestOptions = {
+    method: "POST",
+    headers: authHeader(),
+    body: JSON.stringify({
+      type: "leaveLobby",
+      accessResource: userId
+    })
+  };
+
+  return fetch("http://localhost:5000/api/requests", requestOptions).then(
+    handleResponse
+  );
+}
 
 function createLobby(name) {
   const requestOptions = {
@@ -89,6 +121,8 @@ function handleResponse(response) {
   if (!response.ok) {
     return Promise.reject(response.statusText);
   }
-
-  return response.json();
+  const ret = response.json();
+  console.log("Response is");
+  console.log(ret);
+  return ret;
 }

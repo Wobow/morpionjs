@@ -5,6 +5,50 @@ export const GameService = {
   getGame
 };
 
+function createGame(lobbyId) {
+  const requestOptions = {
+    method: "POST",
+    headers: authHeader(),
+    body: JSON.stringify({
+      type: "createGame",
+      accessResource: lobbyId
+    })
+  };
+
+  return fetch("http://localhost:5000/api/requests", requestOptions).then(
+    handleResponse
+  );
+}
+
+function leaveGame(userId) {
+  const requestOptions = {
+    method: "POST",
+    headers: authHeader(),
+    body: JSON.stringify({
+      type: "leaveGame",
+      accessResource: userId
+    })
+  };
+
+  return fetch("http://localhost:5000/api/requests", requestOptions).then(
+    handleResponse
+  );
+}
+function joinGame(gameId) {
+  const requestOptions = {
+    method: "POST",
+    headers: authHeader(),
+    body: JSON.stringify({
+      type: "joinGame",
+      accessResource: gameId
+    })
+  };
+
+  return fetch("http://localhost:5000/api/requests", requestOptions).then(
+    handleResponse
+  );
+}
+
 function getGames() {
   const requestOptions = {
     method: "GET",

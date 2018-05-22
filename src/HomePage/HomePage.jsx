@@ -15,6 +15,7 @@ class HomePage extends React.Component {
     };
     this.props.dispatch(userActions.getAll());
     this.props.dispatch(lobbyActions.getAll());
+    this.props.dispatch(lobbyActions.joinLobby("5b0198560a955a2740739a38"));
   }
 
   componentDidMount() {}
@@ -46,6 +47,7 @@ class HomePage extends React.Component {
   render() {
     const { user, users, lobbies } = this.props;
     const { lobbyName, submitted } = this.state;
+
     console.log("toto");
     console.log(this.state);
     console.log(users);
@@ -99,7 +101,8 @@ class HomePage extends React.Component {
                   ) : (
                     <span>
                       {" "}
-                      - <a onClick={this.handleDeleteLobby(lobby.id)}>Delete</a>
+                      -{" "}
+                      <a onClick={this.handleDeleteLobby(lobby._id)}>Delete</a>
                     </span>
                   )}
                 </li>
