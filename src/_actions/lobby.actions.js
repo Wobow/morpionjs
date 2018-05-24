@@ -10,6 +10,7 @@ export const lobbyActions = {
   getLobbyUsers,
   getLobbyGames,
   joinLobby,
+  leaveLobby,
   delete: _delete
 };
 
@@ -100,13 +101,13 @@ function getLobbyUsers(id) {
   };
 
   function request() {
-    return { type: lobbyConstants.GET_REQUEST };
+    return { type: lobbyConstants.LOBBY_USERS_GET_REQUEST };
   }
   function success(lobbys) {
-    return { type: lobbyConstants.GET_SUCCESS, lobbys };
+    return { type: lobbyConstants.LOBBY_USERS_GET_SUCCESS, lobbys };
   }
   function failure(error) {
-    return { type: lobbyConstants.GET_FAILURE, error };
+    return { type: lobbyConstants.LOBBY_USERS_GET_FAILURE, error };
   }
 }
 
@@ -114,19 +115,46 @@ function joinLobby(id) {
   return dispatch => {
     dispatch(request());
 
-    lobbyService
-      .joinLobby(id)
-      .then(res => dispatch(success(res)), error => dispatch(failure(error)));
+    lobbyService.joinLobby(id).then(
+      res => {
+        if (res.status === "rejected") {
+          dispatch(failure(res.message));
+        } else {
+          dispatch(success(res));
+        }
+      },
+      error => dispatch(failure(error))
+    );
   };
 
   function request() {
     return { type: lobbyConstants.LOBBY_JOIN_REQUEST };
   }
-  function success(lobbys) {
-    return { type: lobbyConstants.LOBBY_JOIN_SUCCESS, lobbys };
+  function success(res) {
+    return { type: lobbyConstants.LOBBY_JOIN_SUCCESS, res };
   }
   function failure(error) {
     return { type: lobbyConstants.LOBBY_JOIN_FAILURE, error };
+  }
+}
+
+function leaveLobby(id) {
+  return dispatch => {
+    dispatch(request());
+
+    lobbyService
+      .leaveLobby(id)
+      .then(res => dispatch(success(res)), error => dispatch(failure(error)));
+  };
+
+  function request() {
+    return { type: lobbyConstants.LOBBY_LEAVE_REQUEST };
+  }
+  function success(res) {
+    return { type: lobbyConstants.LOBBY_LEAVE_SUCCESS, res };
+  }
+  function failure(error) {
+    return { type: lobbyConstants.LOBBY_LEAVE_FAILURE, error };
   }
 }
 
@@ -143,13 +171,13 @@ function getLobbyGames(id) {
   };
 
   function request() {
-    return { type: lobbyConstants.GET_REQUEST };
+    return { type: lobbyConstants.LOBBY_GAMES_GET_REQUEST };
   }
-  function success(lobbys) {
-    return { type: lobbyConstants.GET_SUCCESS, lobbys };
+  function success(games) {
+    return { type: lobbyConstants.LOBBY_GAMES_GET_SUCCESS, games };
   }
   function failure(error) {
-    return { type: lobbyConstants.GET_FAILURE, error };
+    return { type: lobbyConstants.LOBBY_GAMES_GET_FAILURE, error };
   }
 }
 

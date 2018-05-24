@@ -11,11 +11,11 @@ export const gameActions = {
   leave
 };
 
-function create(lobbyId) {
+function create(gameName) {
   return dispatch => {
-    dispatch(request({ lobbyId }));
+    dispatch(request({ gameName }));
 
-    gameService.createGame(name).then(
+    gameService.createGame(gameName).then(
       game => {
         dispatch(success(game));
       },
@@ -26,14 +26,14 @@ function create(lobbyId) {
     );
   };
 
-  function request(lobbyId) {
-    return { type: gameConstants.GAME_CREATE_REQUEST, lobbyId };
+  function request(gameName) {
+    return { type: gameConstants.GAME_CREATE_REQUEST, gameName };
   }
-  function success(lobbyId) {
-    return { type: gameConstants.GAME_CREATE_SUCCESS, lobbyId };
+  function success(gameName) {
+    return { type: gameConstants.GAME_CREATE_SUCCESS, gameName };
   }
   function failure(error) {
-    return { type: gameConstants.GAME_CREATE_FAILURE, lobbyId };
+    return { type: gameConstants.GAME_CREATE_FAILURE, error };
   }
 }
 

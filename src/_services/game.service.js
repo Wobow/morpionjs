@@ -1,8 +1,11 @@
 import { authHeader } from "../_helpers";
 
-export const GameService = {
+export const gameService = {
   getGames,
-  getGame
+  getGame,
+  createGame,
+  leaveGame,
+  joinGame
 };
 
 function createGame(lobbyId) {

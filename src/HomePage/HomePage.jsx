@@ -15,10 +15,14 @@ class HomePage extends React.Component {
     };
     this.props.dispatch(userActions.getAll());
     this.props.dispatch(lobbyActions.getAll());
-    this.props.dispatch(lobbyActions.joinLobby("5b0198560a955a2740739a38"));
+    this.props.dispatch(lobbyActions.leaveLobby(this.props.user.user._id));
   }
 
   componentDidMount() {}
+
+  handleJoinLobby(id) {
+    return e => this.props.dispatch(lobbyActions.joinLobby(id));
+  }
 
   handleDeleteUser(id) {
     return e => this.props.dispatch(userActions.delete(id));
@@ -47,12 +51,14 @@ class HomePage extends React.Component {
   render() {
     const { user, users, lobbies } = this.props;
     const { lobbyName, submitted } = this.state;
+    let test = false;
 
     console.log("toto");
     console.log(this.state);
     console.log(users);
     console.log(lobbies);
     console.log(this.props);
+
     return (
       <div className="col-md-6 col-md-offset-3">
         <h1>Hi {user.firstName}!</h1>
@@ -103,6 +109,12 @@ class HomePage extends React.Component {
                       {" "}
                       -{" "}
                       <a onClick={this.handleDeleteLobby(lobby._id)}>Delete</a>
+                      <Link
+                        to={`/lobby/${lobby._id}`}
+                        onClick={this.handleJoinLobby(lobby._id)}
+                      >
+                        Join
+                      </Link>
                     </span>
                   )}
                 </li>
@@ -144,6 +156,7 @@ class HomePage extends React.Component {
 function mapStateToProps(state) {
   const { users, authentication, lobbies } = state;
   const { user } = authentication;
+  console.log("this is test");
   return {
     user,
     users,

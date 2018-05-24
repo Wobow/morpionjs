@@ -76,7 +76,7 @@ function getLobby(id) {
     headers: authHeader()
   };
 
-  return fetch("http://localhost:5000/api/lobbies" + _id, requestOptions).then(
+  return fetch("http://localhost:5000/api/lobbies/" + id, requestOptions).then(
     handleResponse
   );
 }
@@ -88,7 +88,7 @@ function getLobbyUsers(id) {
   };
 
   return fetch(
-    "http://localhost:5000/api/lobbies" + _id + "/users",
+    "http://localhost:5000/api/lobbies/" + id + "/users",
     requestOptions
   ).then(handleResponse);
 }
@@ -100,7 +100,7 @@ function getLobbyGames(id) {
   };
 
   return fetch(
-    "http://localhost:5000/api/lobbies" + _id + "/games",
+    "http://localhost:5000/api/lobbies/" + id + "/games",
     requestOptions
   ).then(handleResponse);
 }
