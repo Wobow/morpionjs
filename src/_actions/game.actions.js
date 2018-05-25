@@ -82,6 +82,9 @@ function get(id) {
 }
 
 function join(id) {
+  console.log(
+    "===================================================== IN JOIN GAME ================================================"
+  );
   return dispatch => {
     dispatch(request());
 

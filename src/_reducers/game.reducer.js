@@ -23,7 +23,7 @@ export function lobbies(state = {}, action) {
       });
     case gameConstants.GAME_GET_SUCCESS:
       return Object.assign({}, state, {
-        game: action.games
+        game: action.game
       });
     case gameConstants.GAME_GET_FAILURE:
       return Object.assign({}, state, {

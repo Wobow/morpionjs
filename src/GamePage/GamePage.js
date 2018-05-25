@@ -4,24 +4,61 @@ import { connect } from "react-redux";
 import { Game } from "../_components/Game.js";
 import { userActions } from "../_actions";
 import { gameActions } from "../_actions";
+import io from "socket.io-client";
+
+const gameIds = [1, 2, 4, 8, 16, 32, 64, 128, 256];
 
 class GamePage extends React.Component {
   constructor(props) {
     super(props);
+    this.socket = io.connect("http://localhost:5000/");
+    console.log(this.props);
+    this.props.dispatch(gameActions.get(this.props.match.params.id));
+    this.socket.on("message", message => {
+      console.log("message");
+      console.log(message);
+      // Handle socket messages
+      // {message: 'MESSAGE', data: Game, finished: Boolean}
+    });
+
+    this.socket.on("error", error => {
+      console.log(error);
+      // Handle error message
+      // {message: 'MESSAGE', stack: Object}
+    });
+
+    this.socket.on("turn", turn => {
+      console.log("turn");
+      // Handle turn event
+      // {message: 'MESSAGE', data: Game}
+    });
     this.state = {
       gameName: "",
       submitted: false
     };
+    this.socket.emit("joinGame", {
+      gameId: this.props.match.params.id
+    });
     console.log(
       "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ in constructor"
     );
     console.log(props);
   }
 
+  playTurn() {
+    this.socket.emit("playTurn", {
+      gameId: this.props.match.params.id
+    });
+  }
+
   componentDidMount() {}
 
+  componentWillUnmount() {
+    this.props.dispatch(gameActions.leave(this.props.user.user._id));
+  }
+
   handleGameLeave(user) {
-    return e => this.props.dispatch(gameActions.leaveGame(user.id));
+    return e => this.props.dispatch(gameActions.leave(user.user._id));
   }
 
   handleChange = e => {
@@ -45,7 +82,7 @@ class GamePage extends React.Component {
         <Game />
         <p>
           <Link to="/" onClick={this.handleGameLeave(user)}>
-            Leave Lobby
+            Leave Game
           </Link>
         </p>
         <p>

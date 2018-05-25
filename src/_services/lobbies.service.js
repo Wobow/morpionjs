@@ -26,11 +26,11 @@ function joinLobby(id) {
   );
 }
 
-function leaveLobby(userId) {
+async function leaveLobby(userId) {
   const requestOptions = {
     method: "POST",
     headers: authHeader(),
-    body: JSON.stringify({
+    body: await JSON.stringify({
       type: "leaveLobby",
       accessResource: userId
     })

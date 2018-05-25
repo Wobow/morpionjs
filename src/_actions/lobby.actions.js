@@ -1,6 +1,6 @@
 import { lobbyConstants } from "../_constants";
 import { lobbyService } from "../_services";
-import { alertActions } from "./";
+import { alertActions, gameActions } from "./";
 import { history } from "../_helpers";
 
 export const lobbyActions = {
@@ -21,6 +21,7 @@ function create(name) {
     lobbyService.createLobby(name).then(
       lobby => {
         dispatch(success(lobby));
+        dispatch(gameActions.getAll());
         history.push("/");
       },
       error => {
@@ -142,9 +143,15 @@ function leaveLobby(id) {
   return dispatch => {
     dispatch(request());
 
-    lobbyService
-      .leaveLobby(id)
-      .then(res => dispatch(success(res)), error => dispatch(failure(error)));
+    lobbyService.leaveLobby(id).then(
+      res => {
+        dispatch(success(res));
+      },
+      error => {
+        dispatch(gameActions.getAll());
+        dispatch(failure(error));
+      }
+    );
   };
 
   function request() {

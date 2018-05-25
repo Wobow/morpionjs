@@ -9,29 +9,54 @@ import { gameActions } from "../_actions";
 class LobbyPage extends React.Component {
   constructor(props) {
     super(props);
+    this.joinedGame = false;
     this.state = {
       gameName: "",
-      submitted: false
+      submitted: false,
+      joinedGame: false
     };
     console.log(
       "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ in constructor"
     );
     console.log(props);
     this.props.dispatch(lobbyActions.getLobbyGames(props.match.params.id));
+    this.componentCleanup = this.componentCleanup.bind(this);
+    this.dispatch = this.props.dispatch;
+    this.userId = this.props.user.user._id;
   }
 
-  componentDidMount() {}
+  componentCleanup() {
+    this.dispatch(lobbyActions.leaveLobby(this.userId));
+    this.dispatch(gameActions.leave(this.userId));
+  }
+
+  componentWillMount() {
+    window.addEventListener("beforeunload", this.componentCleanup);
+    //   this.setState({ joinedGame: false });
+  }
+
+  componentWillUnmount() {
+    console.log("---------------------------------- WILL UNMOUND");
+    console.log(this.state);
+    window.removeEventListener("beforeunload", this.componentCleanup);
+    if (this.joinedGame == false) {
+      this.componentCleanup();
+    }
+  }
 
   handleLobbyLeave(user) {
-    return e => this.props.dispatch(lobbyActions.leaveLobby(user.id));
+    this.props.dispatch(lobbyActions.leaveLobby(user.user._id));
+    this.props.dispatch(gameActions.leave(this.props.user.user._id));
   }
 
   handleDeleteLobby(id) {
-    return e => this.props.dispatch(lobbyActions.delete(id));
+    this.props.dispatch(lobbyActions.delete(id));
   }
 
   handleJoinGame(id) {
-    return e => this.props.dispatch(gameActions.join(id));
+    console.log("handleJoin   ");
+    this.joinedGame = true;
+    this.props.dispatch(gameActions.join(id));
   }
 
   handleChange = e => {
@@ -39,8 +64,9 @@ class LobbyPage extends React.Component {
     this.setState({ [name]: value });
   };
 
-  handleSubmit(gameName) {
-    this.props.dispatch(gameActions.create(gameName));
+  async handleSubmit(gameName) {
+    await this.props.dispatch(gameActions.create(gameName));
+    this.props.dispatch(lobbyActions.getLobbyGames(this.props.match.params.id));
   }
 
   render() {
@@ -61,7 +87,7 @@ class LobbyPage extends React.Component {
                   {game._id} - {game.players.length} {"player(s) - "}
                   <Link
                     to={`/game/${game._id}`}
-                    onClick={this.handleJoinGame(game._id)}
+                    onClick={() => this.handleJoinGame(game._id)}
                   >
                     Join
                   </Link>
@@ -77,7 +103,7 @@ class LobbyPage extends React.Component {
           Create Game
         </button>
         <p>
-          <Link to="/" onClick={this.handleLobbyLeave(user)}>
+          <Link to="/" onClick={() => this.handleLobbyLeave(user)}>
             Leave Lobby
           </Link>
         </p>

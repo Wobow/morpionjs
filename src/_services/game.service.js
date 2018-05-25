@@ -69,7 +69,7 @@ function getGame(id) {
     headers: authHeader()
   };
 
-  return fetch("http://localhost:5000/api/games/" + _id, requestOptions).then(
+  return fetch("http://localhost:5000/api/games/" + id, requestOptions).then(
     handleResponse
   );
 }

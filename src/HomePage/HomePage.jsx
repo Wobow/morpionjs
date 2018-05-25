@@ -11,25 +11,28 @@ class HomePage extends React.Component {
     this.state = {
       lobbyName: "",
       submitted: false,
-      lobbies: {}
+      lobbies: {},
+      userId: this.props.user.user._id
     };
     this.props.dispatch(userActions.getAll());
     this.props.dispatch(lobbyActions.getAll());
-    this.props.dispatch(lobbyActions.leaveLobby(this.props.user.user._id));
   }
 
-  componentDidMount() {}
+  componentWillUnMount() {
+    lobbyActions.leaveLobby(this.state.userId);
+  }
 
   handleJoinLobby(id) {
-    return e => this.props.dispatch(lobbyActions.joinLobby(id));
+    this.props.dispatch(lobbyActions.joinLobby(id));
   }
 
   handleDeleteUser(id) {
-    return e => this.props.dispatch(userActions.delete(id));
+    this.props.dispatch(userActions.delete(id));
   }
 
-  handleDeleteLobby(id) {
-    return e => this.props.dispatch(lobbyActions.delete(id));
+  async handleDeleteLobby(id) {
+    this.props.dispatch(await lobbyActions.delete(id));
+    this.props.dispatch(lobbyActions.getAll());
   }
 
   handleChange = e => {
@@ -37,14 +40,15 @@ class HomePage extends React.Component {
     this.setState({ [name]: value });
   };
 
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault();
 
     this.setState({ submitted: true });
     const { lobbyName } = this.state;
     const { dispatch } = this.props;
     if (lobbyName) {
-      dispatch(lobbyActions.create(lobbyName));
+      dispatch(await lobbyActions.create(lobbyName));
+      dispatch(lobbyActions.getAll());
     }
   };
 
@@ -61,7 +65,7 @@ class HomePage extends React.Component {
 
     return (
       <div className="col-md-6 col-md-offset-3">
-        <h1>Hi {user.firstName}!</h1>
+        <h1>Hi {user.user.username}!</h1>
         <p>You're logged in with React!!</p>
         <h3>All registered users:</h3>
         {users.loading && <em>Loading users...</em>}
@@ -83,7 +87,8 @@ class HomePage extends React.Component {
                 ) : (
                   <span>
                     {" "}
-                    - <a onClick={this.handleDeleteUser(user.id)}>Delete</a>
+                    -{" "}
+                    <a onClick={() => this.handleDeleteUser(user.id)}>Delete</a>
                   </span>
                 )}
               </li>
@@ -108,10 +113,12 @@ class HomePage extends React.Component {
                     <span>
                       {" "}
                       -{" "}
-                      <a onClick={this.handleDeleteLobby(lobby._id)}>Delete</a>
+                      <a onClick={() => this.handleDeleteLobby(lobby._id)}>
+                        Delete
+                      </a>
                       <Link
                         to={`/lobby/${lobby._id}`}
-                        onClick={this.handleJoinLobby(lobby._id)}
+                        onClick={() => this.handleJoinLobby(lobby._id)}
                       >
                         Join
                       </Link>
