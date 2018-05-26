@@ -59,8 +59,22 @@ class HomePage extends React.Component {
 
     return (
       <div className="col-md-6 col-md-offset-3">
-        <h1>Hi {user.user.username}!</h1>
-        <h3>All Lobbies:</h3>
+        <h1>Hi {user.firstName}!</h1>
+        <p>
+          You're logged in with React!!<br />Welcome on Morpion JS Project.
+        </p>
+        <h3>Here are the registered users and lobbies:</h3>
+        {users.loading && <em>Loading users...</em>}
+        {users.error && (
+          <span className="text-danger">ERROR: {users.error}</span>
+        )}
+        {users.items && (
+          <ul>
+            {users.items.map((user, index) => (
+              <li key={user._id}>{user.username}</li>
+            ))}
+          </ul>
+        )}
 
         {lobbies &&
           lobbies.items && (
