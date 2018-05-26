@@ -1,0 +1,96 @@
+html {
+  background-color: rgba(49, 55, 69, 1);
+  color: white;
+  font-size: 16px;
+  line-height: 26px;
+}
+
+h2 { color: #ffffff; font-family: 'Lato', sans-serif; font-size: 54px; font-weight: 300; line-height: 58px; margin: 0 0 58px; }
+
+.container {
+  //font-family: 'Proxima Nova Soft','Helvetica Neue',sans-serif;
+  text-align: center;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  color: #adb7bd;
+  font-family: 'Lucida Sans', Arial, sans-serif;
+}
+
+.container label {
+  margin-right: 10px;
+}
+
+.container .form-group {
+  margin: 20px;
+}
+
+.container button {
+  background-color: #0097A7;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 15px;
+}
+.container button:hover {
+  transform: scale(1.1);
+}
+
+.container .btn-link {
+  background-color: #0097A7;
+  border: none;
+  color: white;
+  padding: 14px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 15px;
+}
+.container .btn-link:hover {
+  transform: scale(1.1);
+}
+
+a {
+  color: white;
+  margin: 10px;
+  text-decoration: underline;
+}
+a:hover {
+  font-weight: bold;
+}
+
+.game-board button {
+  padding: 0;
+  margin: 5px;
+  background-color: #008896;
+  font-size: 70px;
+}
+.game button:hover {
+  transform: scale(1.1);
+}
+
+.game {
+  width: 100%;
+  margin-top: 50px;
+}
+.game-board {
+  margin-top: 40px;
+  width: 50%;
+  float: right;
+  transform: translateX(30%);
+}
+.game-info {
+  margin-top: 40px;
+  width: 50%;
+  right: 0;
+  border-left: 1px solid #adb7bd;
+}
+
+.square {
+  width: 100px;
+  height: 100px;
+}

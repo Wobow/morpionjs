@@ -62,8 +62,8 @@ class HomePage extends React.Component {
     return (
       <div className="col-md-6 col-md-offset-3">
         <h1>Hi {user.firstName}!</h1>
-        <p>You're logged in with React!!</p>
-        <h3>All registered users:</h3>
+        <p>You're logged in with React!!<br/>Welcome on Morpion JS Project.</p>
+        <h3>Here are the registered users and lobbies:</h3>
         {users.loading && <em>Loading users...</em>}
         {users.error && (
           <span className="text-danger">ERROR: {users.error}</span>
