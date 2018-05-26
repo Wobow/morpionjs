@@ -20,9 +20,14 @@ function create(name) {
 
     lobbyService.createLobby(name).then(
       lobby => {
-        dispatch(success(lobby));
-        dispatch(gameActions.getAll());
-        history.push("/");
+        if (res.status === "rejected") {
+          dispatch(failure(lobby.message));
+          dispatch(alertActions.error(lobby.message));
+        } else {
+          dispatch(success(lobby));
+          dispatch(gameActions.getAll());
+          history.push("/");
+        }
       },
       error => {
         dispatch(failure(error));
@@ -120,6 +125,7 @@ function joinLobby(id) {
       res => {
         if (res.status === "rejected") {
           dispatch(failure(res.message));
+          dispatch(alertActions.error(res.message));
         } else {
           dispatch(success(res));
         }

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Game } from "../_components/Game.js";
 import { userActions } from "../_actions";
+import { alertActions } from "../_actions";
 import { gameActions } from "../_actions";
 import { tictacActions } from "../_actions";
 import io from "socket.io-client";
@@ -31,20 +32,28 @@ class GamePage extends React.Component {
 
       // If message.data.status == ended -> display "GAME HAS ENDED" instead of current turn
 
-      console.log(message);
+      console.log(message.message);
       // Handle socket messages
       // {message: 'MESSAGE', data: Game, finished: Boolean}
     });
 
     this.socket.on("error", error => {
       console.log(error);
+      this.props.dispatch(alertActions.error(error.message));
       // Handle error message
       // {message: 'MESSAGE', stack: Object}
     });
 
     this.socket.on("turn", turn => {
       console.log("turn");
+      console.log(turn.data.draw);
       console.log(turn);
+      if (turn.data && turn.data.draw == true) {
+        console.log("draw is true");
+        this.props.dispatch(
+          alertActions.error("It's a draw! Please leave the game.")
+        );
+      }
       if (turn.data) {
         this.props.dispatch(tictacActions.getBoard(turn.data.moves));
         if (turn.data.turn == this.props.user.user._id) {

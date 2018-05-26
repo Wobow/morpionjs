@@ -18,8 +18,13 @@ function create(gameName, lobbyId) {
 
     gameService.createGame(gameName).then(
       game => {
-        dispatch(success(game));
-        dispatch(lobbyActions.getLobbyGames(lobbyId));
+        if (game.status === "rejected") {
+          dispatch(failure(game));
+          dispatch(alertActions.error(game.message));
+        } else {
+          dispatch(success(game));
+          dispatch(lobbyActions.getLobbyGames(lobbyId));
+        }
       },
       error => {
         dispatch(failure(error));
