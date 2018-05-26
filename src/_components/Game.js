@@ -128,7 +128,12 @@ class Game extends React.Component {
       for (let i in board) {
         console.log("i=" + i + " - gameIds[i]=" + gameIds[i]);
         index = gameIds.indexOf(board[i]);
-        current.squares[index] = "#";
+        if (i % 2 == 0) {
+          current.squares[index] = "X";
+        } else {
+          current.squares[index] = "O";
+        }
+
         console.log("IN IF : " + index);
       }
     }
