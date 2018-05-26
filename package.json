@@ -8,6 +8,7 @@
   },
   "license": "MIT",
   "scripts": {
+    "build": "webpack-dev-server --progress",
     "start": "webpack-dev-server --open"
   },
   "proxy": "http://localhost:5000/",
