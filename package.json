@@ -3,13 +3,18 @@
   "version": "1.0.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cornflourblue/react-redux-registration-login-example.git"
+    "url":
+      "https://github.com/cornflourblue/react-redux-registration-login-example.git"
   },
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --open"
   },
   "proxy": "http://localhost:5000/",
+  "engines": {
+    "npm": "6.0.0",
+    "node": "9.0.0"
+  },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "css-loader": "^0.28.11",
