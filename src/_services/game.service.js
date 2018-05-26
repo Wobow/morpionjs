@@ -18,7 +18,7 @@ function createGame(lobbyId) {
     })
   };
 
-  return fetch("http://localhost:5000/api/requests", requestOptions).then(
+  return fetch("http://morbak.alan-balbo.com/api/requests", requestOptions).then(
     handleResponse
   );
 }
@@ -33,7 +33,7 @@ function leaveGame(userId) {
     })
   };
 
-  return fetch("http://localhost:5000/api/requests", requestOptions).then(
+  return fetch("http://morbak.alan-balbo.com/api/requests", requestOptions).then(
     handleResponse
   );
 }
@@ -47,7 +47,7 @@ function joinGame(gameId) {
     })
   };
 
-  return fetch("http://localhost:5000/api/requests", requestOptions).then(
+  return fetch("http://morbak.alan-balbo.com/api/requests", requestOptions).then(
     handleResponse
   );
 }
@@ -58,7 +58,7 @@ function getGames() {
     headers: authHeader()
   };
 
-  return fetch("http://localhost:5000/api/games", requestOptions).then(
+  return fetch("http://morbak.alan-balbo.com/api/games", requestOptions).then(
     handleResponse
   );
 }
@@ -69,7 +69,7 @@ function getGame(id) {
     headers: authHeader()
   };
 
-  return fetch("http://localhost:5000/api/games/" + id, requestOptions).then(
+  return fetch("http://morbak.alan-balbo.com/api/games/" + id, requestOptions).then(
     handleResponse
   );
 }

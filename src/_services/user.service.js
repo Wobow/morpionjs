@@ -17,7 +17,7 @@ function login(username, password) {
         body: JSON.stringify({ username, password })
     };
 
-    return fetch('http://localhost:5000/api/auth/login', requestOptions)
+    return fetch('http://morbak.alan-balbo.com/api/auth/login', requestOptions)
         .then(response => {
             if (!response.ok) {
                 return Promise.reject(response.statusText);
@@ -47,7 +47,7 @@ function getAll() {
         headers: authHeader()
     };
 
-    return fetch('http://localhost:5000/api/users', requestOptions).then(handleResponse);
+    return fetch('http://morbak.alan-balbo.com/api/users', requestOptions).then(handleResponse);
 }
 
 function getById(id) {
@@ -66,7 +66,7 @@ function register(user) {
         body: JSON.stringify(user)
     };
 
-    return fetch('http://localhost:5000/api/auth/register', requestOptions).then(handleResponse);
+    return fetch('http://morbak.alan-balbo.com/api/auth/register', requestOptions).then(handleResponse);
 }
 
 function update(user) {
@@ -76,7 +76,7 @@ function update(user) {
         body: JSON.stringify(user)
     };
 
-    return fetch('http://localhost:5000/api/users/' + user.id, requestOptions).then(handleResponse);;
+    return fetch('http://morbak.alan-balbo.com/api/users/' + user.id, requestOptions).then(handleResponse);;
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript
@@ -86,7 +86,7 @@ function _delete(id) {
         headers: authHeader()
     };
 
-    return fetch('http://localhost:5000/api/users/' + id, requestOptions).then(handleResponse);;
+    return fetch('http://morbak.alan-balbo.com/api/users/' + id, requestOptions).then(handleResponse);;
 }
 
 function handleResponse(response) {

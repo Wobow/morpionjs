@@ -21,7 +21,7 @@ function joinLobby(id) {
     })
   };
 
-  return fetch("http://localhost:5000/api/requests", requestOptions).then(
+  return fetch("http://morbak.alan-balbo.com/api/requests", requestOptions).then(
     handleResponse
   );
 }
@@ -36,7 +36,7 @@ async function leaveLobby(userId) {
     })
   };
 
-  return fetch("http://localhost:5000/api/requests", requestOptions).then(
+  return fetch("http://morbak.alan-balbo.com/api/requests", requestOptions).then(
     handleResponse
   );
 }
@@ -48,7 +48,7 @@ function createLobby(name) {
     body: JSON.stringify({ name })
   };
 
-  return fetch("http://localhost:5000/api/lobbies", requestOptions).then(
+  return fetch("http://morbak.alan-balbo.com/api/lobbies", requestOptions).then(
     response => {
       if (!response.ok) {
         return Promise.reject(response.statusText);
@@ -65,7 +65,7 @@ function getLobbies() {
     headers: authHeader()
   };
 
-  return fetch("http://localhost:5000/api/lobbies", requestOptions).then(
+  return fetch("http://morbak.alan-balbo.com/api/lobbies", requestOptions).then(
     handleResponse
   );
 }
@@ -76,7 +76,7 @@ function getLobby(id) {
     headers: authHeader()
   };
 
-  return fetch("http://localhost:5000/api/lobbies/" + id, requestOptions).then(
+  return fetch("http://morbak.alan-balbo.com/api/lobbies/" + id, requestOptions).then(
     handleResponse
   );
 }
@@ -88,7 +88,7 @@ function getLobbyUsers(id) {
   };
 
   return fetch(
-    "http://localhost:5000/api/lobbies/" + id + "/users",
+    "http://morbak.alan-balbo.com/api/lobbies/" + id + "/users",
     requestOptions
   ).then(handleResponse);
 }
@@ -100,7 +100,7 @@ function getLobbyGames(id) {
   };
 
   return fetch(
-    "http://localhost:5000/api/lobbies/" + id + "/games",
+    "http://morbak.alan-balbo.com/api/lobbies/" + id + "/games",
     requestOptions
   ).then(handleResponse);
 }
@@ -112,7 +112,7 @@ function _delete(id) {
     headers: authHeader()
   };
 
-  return fetch("http://localhost:5000/api/lobbies/" + id, requestOptions).then(
+  return fetch("http://morbak.alan-balbo.com/api/lobbies/" + id, requestOptions).then(
     handleResponse
   );
 }

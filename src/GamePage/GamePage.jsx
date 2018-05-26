@@ -15,7 +15,7 @@ class GamePage extends React.Component {
     this.state = {
       secret: undefined
     };
-    this.socket = io.connect("http://localhost:5000/");
+    this.socket = io.connect("http://morbak.alan-balbo.com/");
     this.socket.on("message", message => {
       if (message.data.turn) {
         if (message.data.turn == this.props.user.user._id) {
