@@ -1,2 +1,2 @@
-export * from './PrivateRoute';
-export { Game } from './Game.js';
+export * from "./PrivateRoute";
+export { Game } from "./Game.js";

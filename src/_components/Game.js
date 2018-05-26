@@ -75,6 +75,7 @@ class Game extends React.Component {
       return;
     }
     console.log("HANDLECLICK");
+    console.log(this.props);
     console.log(
       gameIds[i],
       this.props.secret,
@@ -89,6 +90,7 @@ class Game extends React.Component {
         this.props.socket
       )
     );
+
     // squares[i] = this.state.xIsNext ? "X" : "O";
     this.setState({
       history: history.concat([
