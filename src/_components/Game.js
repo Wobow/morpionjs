@@ -74,6 +74,13 @@ class Game extends React.Component {
     if (this.state.turn == false) {
       return;
     }
+    console.log("HANDLECLICK");
+    console.log(
+      gameIds[i],
+      this.props.secret,
+      this.props.gameId,
+      this.props.socket
+    );
     this.props.dispatch(
       tictacActions.playTurn(
         gameIds[i],
@@ -106,6 +113,7 @@ class Game extends React.Component {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
+    let board = this.props.tictac.board;
     let index;
     // if (!this.state.socket || !this.state.secret) {
     //   this.setState({
@@ -114,13 +122,12 @@ class Game extends React.Component {
     //     turn: turn
     //   });
     // }
-    if (this.props.tictac.board) {
-      for (let i in gameIds) {
+    if (board) {
+      for (let i in board) {
         console.log("i=" + i + " - gameIds[i]=" + gameIds[i]);
-        if ((index = this.props.tictac.board.indexOf(gameIds[i])) != -1) {
-          current.squares[index] = "#";
-          console.log("IN IF");
-        }
+        index = gameIds.indexOf(board[i]);
+        current.squares[index] = "#";
+        console.log("IN IF : " + index);
       }
     }
 

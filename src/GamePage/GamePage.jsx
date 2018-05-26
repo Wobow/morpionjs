@@ -17,8 +17,8 @@ class GamePage extends React.Component {
     };
     this.socket = io.connect("http://localhost:5000/");
     this.socket.on("message", message => {
-      if (this.props.game.turn) {
-        if (this.props.game.turn._id == this.props.user.user._id) {
+      if (message.data.turn) {
+        if (message.data.turn == this.props.user.user._id) {
           this.props.dispatch(tictacActions.turn(true));
         } else {
           this.props.dispatch(tictacActions.turn(false));
@@ -44,6 +44,15 @@ class GamePage extends React.Component {
 
     this.socket.on("turn", turn => {
       console.log("turn");
+      console.log(turn);
+      if (turn.data) {
+        this.props.dispatch(tictacActions.getBoard(turn.data.moves));
+        if (turn.data.turn == this.props.user.user._id) {
+          this.props.dispatch(tictacActions.turn(true));
+        } else {
+          this.props.dispatch(tictacActions.turn(false));
+        }
+      }
       // Handle turn event
       // {message: 'MESSAGE', data: Game}
     });
