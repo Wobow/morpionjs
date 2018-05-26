@@ -89,7 +89,8 @@ class LobbyPage extends React.Component {
             <ul>
               {games.map((game, index) => (
                 <li key={game._id}>
-                  {game._id} - {game.players.length} {"player(s) - "}
+                  {game._id} - {game.players.length} {"player(s) - "}{" "}
+                  {game.status}
                   <Link
                     to={`/game/${game._id}`}
                     onClick={() => this.handleJoinGame(game._id)}
