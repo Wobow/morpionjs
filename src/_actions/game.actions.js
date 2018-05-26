@@ -1,6 +1,7 @@
 import { gameConstants } from "../_constants";
 import { gameService } from "../_services";
 import { alertActions } from "./";
+import { lobbyActions } from "./";
 import { history } from "../_helpers";
 
 export const gameActions = {
@@ -11,13 +12,14 @@ export const gameActions = {
   leave
 };
 
-function create(gameName) {
+function create(gameName, lobbyId) {
   return dispatch => {
     dispatch(request({ gameName }));
 
     gameService.createGame(gameName).then(
       game => {
         dispatch(success(game));
+        dispatch(lobbyActions.getLobbyGames(lobbyId));
       },
       error => {
         dispatch(failure(error));

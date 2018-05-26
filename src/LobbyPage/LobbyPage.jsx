@@ -38,9 +38,10 @@ class LobbyPage extends React.Component {
   componentWillUnmount() {
     console.log("---------------------------------- WILL UNMOUND");
     console.log(this.state);
-    window.removeEventListener("beforeunload", this.componentCleanup);
+
     if (this.joinedGame == false) {
       this.componentCleanup();
+      window.removeEventListener("beforeunload", this.componentCleanup);
     }
   }
 
@@ -54,9 +55,11 @@ class LobbyPage extends React.Component {
   }
 
   handleJoinGame(id) {
-    console.log("handleJoin   ");
+    console.log("handleJoin");
     this.joinedGame = true;
+
     this.props.dispatch(gameActions.join(id));
+    this.props.dispatch(gameActions.get(id));
   }
 
   handleChange = e => {
@@ -65,7 +68,9 @@ class LobbyPage extends React.Component {
   };
 
   async handleSubmit(gameName) {
-    await this.props.dispatch(gameActions.create(gameName));
+    this.props.dispatch(
+      await gameActions.create(gameName, this.props.match.params.id)
+    );
     this.props.dispatch(lobbyActions.getLobbyGames(this.props.match.params.id));
   }
 

@@ -1,5 +1,7 @@
 import React from "react";
 import "./game.css";
+import { connect } from "react-redux";
+import { tictacActions } from "../_actions";
 
 const gameIds = [1, 2, 4, 8, 16, 32, 64, 128, 256];
 
@@ -44,7 +46,7 @@ class Board extends React.Component {
   }
 }
 
-export class Game extends React.Component {
+class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -54,7 +56,10 @@ export class Game extends React.Component {
         }
       ],
       stepNumber: 0,
-      xIsNext: true
+      xIsNext: true,
+      turn: undefined,
+      socket: undefined,
+      gameId: undefined
     };
   }
 
@@ -62,10 +67,22 @@ export class Game extends React.Component {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
+
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
-    squares[i] = this.state.xIsNext ? "X" : "O";
+    if (this.state.turn == false) {
+      return;
+    }
+    this.props.dispatch(
+      tictacActions.playTurn(
+        gameIds[i],
+        this.props.secret,
+        this.props.gameId,
+        this.props.socket
+      )
+    );
+    // squares[i] = this.state.xIsNext ? "X" : "O";
     this.setState({
       history: history.concat([
         {
@@ -85,10 +102,30 @@ export class Game extends React.Component {
   }
 
   render() {
+    const turn = this.props.tictac.isMyTurn;
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
+    let index;
+    // if (!this.state.socket || !this.state.secret) {
+    //   this.setState({
+    //     socket: this.props.socket,
+    //     secret: this.props.secret,
+    //     turn: turn
+    //   });
+    // }
+    if (this.props.tictac.board) {
+      for (let i in gameIds) {
+        console.log("i=" + i + " - gameIds[i]=" + gameIds[i]);
+        if ((index = this.props.tictac.board.indexOf(gameIds[i])) != -1) {
+          current.squares[index] = "#";
+          console.log("IN IF");
+        }
+      }
+    }
 
+    console.log("PROPS UNDER HERE");
+    console.log(this.props);
     const moves = history.map((step, move) => {
       const desc = move ? "Go to move #" + move : "Go to game start";
       return (
@@ -102,7 +139,7 @@ export class Game extends React.Component {
     if (winner) {
       status = "Winner: " + winner;
     } else {
-      status = "Next player: " + (this.state.xIsNext ? "X" : "O");
+      status = "Next player: " + (turn ? "YOU" : "YOUR ENEMY");
     }
 
     return (
@@ -142,4 +179,19 @@ function calculateWinner(squares) {
   }
   return null;
 }
-export default Game;
+
+function mapStateToProps(state) {
+  const { users, authentication, lobbies, tictac } = state;
+  const { user } = authentication;
+  const { currLobby, games } = lobbies;
+  return {
+    user,
+    users,
+    currLobby,
+    games,
+    tictac
+  };
+}
+
+const connectedGame = connect(mapStateToProps)(Game);
+export { connectedGame as Game };

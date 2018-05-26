@@ -1,6 +1,8 @@
 import { gameConstants } from "../_constants";
 
-export function lobbies(state = {}, action) {
+export function games(state = {}, action) {
+  console.log("REDUCER GAME");
+  console.log(action);
   switch (action.type) {
     // Get All Lobbies
     case gameConstants.GAME_GETALL_REQUEST:

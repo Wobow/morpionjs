@@ -57,44 +57,10 @@ class HomePage extends React.Component {
     const { lobbyName, submitted } = this.state;
     let test = false;
 
-    console.log("toto");
-    console.log(this.state);
-    console.log(users);
-    console.log(lobbies);
-    console.log(this.props);
-
     return (
       <div className="col-md-6 col-md-offset-3">
         <h1>Hi {user.user.username}!</h1>
-        <p>You're logged in with React!!</p>
-        <h3>All registered users:</h3>
-        {users.loading && <em>Loading users...</em>}
-        {users.error && (
-          <span className="text-danger">ERROR: {users.error}</span>
-        )}
-        {users.items && (
-          <ul>
-            {users.items.map((user, index) => (
-              <li key={user._id}>
-                {user.username}
-                {user.deleting ? (
-                  <em> - Deleting...</em>
-                ) : user.deleteError ? (
-                  <span className="text-danger">
-                    {" "}
-                    - ERROR: {user.deleteError}
-                  </span>
-                ) : (
-                  <span>
-                    {" "}
-                    -{" "}
-                    <a onClick={() => this.handleDeleteUser(user.id)}>Delete</a>
-                  </span>
-                )}
-              </li>
-            ))}
-          </ul>
-        )}
+        <h3>All Lobbies:</h3>
 
         {lobbies &&
           lobbies.items && (
@@ -152,9 +118,6 @@ class HomePage extends React.Component {
             <button className="btn btn-primary">Create Lobby</button>
           </div>
         </form>
-        <p>
-          <Game />
-        </p>
       </div>
     );
   }

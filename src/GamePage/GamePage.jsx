@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Game } from "../_components/Game.js";
 import { userActions } from "../_actions";
 import { gameActions } from "../_actions";
+import { tictacActions } from "../_actions";
 import io from "socket.io-client";
 
 const gameIds = [1, 2, 4, 8, 16, 32, 64, 128, 256];
@@ -11,11 +12,25 @@ const gameIds = [1, 2, 4, 8, 16, 32, 64, 128, 256];
 class GamePage extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      secret: undefined
+    };
     this.socket = io.connect("http://localhost:5000/");
-    console.log(this.props);
-    this.props.dispatch(gameActions.get(this.props.match.params.id));
     this.socket.on("message", message => {
-      console.log("message");
+      if (this.props.game.turn) {
+        if (this.props.game.turn._id == this.props.user.user._id) {
+          this.props.dispatch(tictacActions.turn(true));
+        } else {
+          this.props.dispatch(tictacActions.turn(false));
+        }
+      }
+
+      if (message.data) {
+        this.props.dispatch(tictacActions.getBoard(message.data.moves));
+      }
+
+      // If message.data.status == ended -> display "GAME HAS ENDED" instead of current turn
+
       console.log(message);
       // Handle socket messages
       // {message: 'MESSAGE', data: Game, finished: Boolean}
@@ -39,10 +54,6 @@ class GamePage extends React.Component {
     this.socket.emit("joinGame", {
       gameId: this.props.match.params.id
     });
-    console.log(
-      "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ in constructor"
-    );
-    console.log(props);
   }
 
   playTurn() {
@@ -73,13 +84,28 @@ class GamePage extends React.Component {
   render() {
     const { user, games, currLobby } = this.props;
     const { gameName, submitted } = this.state;
+    const { game } = games;
+    let secret = undefined;
 
+    if (secret == undefined && game && game.players) {
+      for (let player in game.players) {
+        console.log("------------------------------------- PLAYER LOOOOOOOOP");
+        console.log(player);
+        if (game.players[player].secret) {
+          secret = game.players[player].secret;
+        }
+      }
+    }
     console.log("GameRender");
     console.log(this.props);
 
     return (
       <div>
-        <Game />
+        <Game
+          secret={secret}
+          socket={this.socket}
+          gameId={this.props.match.params.id}
+        />
         <p>
           <Link to="/" onClick={this.handleGameLeave(user)}>
             Leave Game
@@ -94,14 +120,16 @@ class GamePage extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { users, authentication, lobbies } = state;
+  const { users, authentication, lobbies, games, tictac } = state;
   const { user } = authentication;
-  const { currLobby, games } = lobbies;
+  const { currLobby } = lobbies;
+  const { game } = games;
   return {
     user,
     users,
     currLobby,
-    games
+    games,
+    game
   };
 }
 
